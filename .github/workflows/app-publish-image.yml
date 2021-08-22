@@ -26,6 +26,7 @@ jobs:
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
+    environment: dev
     permissions:
       packages: write
       contents: read
