@@ -1,0 +1,46 @@
+name: 'Terraform Apply'
+
+on:
+  push:
+    branches:
+      - develop
+      - feature/automate
+
+jobs:
+  terraform:
+    name: 'Terraform Apply'
+    runs-on: ubuntu-latest
+    environment: dev
+
+    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+    # Checkout the repository to the GitHub Actions runner
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Install build packages
+      run: |
+        sudo apt-get install -y git make curl unzip jq
+        git clone https://github.com/tfutils/tfenv.git ~/.tfenv
+        sudo ln -sf ~/.tfenv/bin/* /usr/local/bin
+
+    - name: Configure AWS credentials from Dev account
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: eu-west-2
+
+    - name: Terraform Plan
+      run: |
+        cd infra
+        make environment=dev stack=serverless plan
+
+    - name: Terraform Apply
+      run: |
+        cd infra
+        make environment=dev stack=serverless apply autoapprove=-auto-approve
