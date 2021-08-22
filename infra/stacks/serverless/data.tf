@@ -20,3 +20,7 @@ data "aws_iam_policy_document" "api_gw_assume_role" {
     }
   }
 }
+
+data "aws_route53_zone" "hosted_zone" {
+  name = var.dns_zone
+}

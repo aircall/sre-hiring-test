@@ -1,8 +1,10 @@
 # Original source - https://gist.githubusercontent.com/SumindaD/5535d110690b141c671cc29917d4091c/raw/39a5abcff3f964ab085d2ede1830d391c5eb30e3/LamdaAuthorizer.py
 import re
+import os
 
 
 def lambda_handler(event, context):
+    API_TOKEN = os.getenv('API_TOKEN')
     print("Client token: " + event['authorizationToken'])
     print("Method ARN: " + event['methodArn'])
 
@@ -19,7 +21,7 @@ def lambda_handler(event, context):
 
     # This is where a request would be sent to an external authentication system for token verification
     # For this demo, the token is verified if it is equal to 'allow' and other values are invalid
-    if (event['authorizationToken'] == 'allow'):
+    if (event['authorizationToken'] == API_TOKEN):
         policy.allowAllMethods()
     else:
         policy.denyAllMethods()

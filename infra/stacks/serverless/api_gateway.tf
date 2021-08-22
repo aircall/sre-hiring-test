@@ -40,7 +40,7 @@ resource "aws_api_gateway_integration" "image_post_integration" {
   uri                     = aws_lambda_function.image_resizer_lambda.invoke_arn
 }
 
-resource "aws_api_gateway_deployment" "test_deployment" {
+resource "aws_api_gateway_deployment" "image_deployment" {
   rest_api_id = aws_api_gateway_rest_api.image.id
   stage_name  = var.environment
 
@@ -70,5 +70,5 @@ resource "aws_lambda_permission" "image_lambda_permission" {
   principal     = "apigateway.amazonaws.com"
 
   # More: http://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-control-access-using-iam-policies-to-invoke-api.html
-  source_arn = "${replace(aws_api_gateway_deployment.test_deployment.execution_arn, var.environment, "")}*/*"
+  source_arn = "${replace(aws_api_gateway_deployment.image_deployment.execution_arn, var.environment, "")}*/*"
 }

@@ -23,6 +23,6 @@ module "docker_image" {
 
   create_ecr_repo = true
   ecr_repo        = local.function_name
-  image_tag       = "initial"
+  image_tag       = "1.0"
   source_path     = "../../../"
 }

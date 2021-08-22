@@ -9,3 +9,9 @@ variable "binary_media_types" {
   default     = ["multipart/form-data", "application/octet-stream"]
   description = "he list of binary media types supported by the RestApi. By default, the RestApi supports only UTF-8-encoded text payloads."
 }
+
+variable "dns_zone" {
+  type        = string
+  description = "Route53 Zone"
+  default     = "shirwalab.net"
+}
