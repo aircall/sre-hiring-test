@@ -1,0 +1,115 @@
+name: "CD Pipeline"
+
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["CI Pipeline"]
+    branches: [main]
+    types:
+      - completed
+
+env:
+  SERVICE: resize
+  TF_VERSION: 0.14.0
+  NODE_VERSION: 14
+
+jobs:
+
+  build:
+    name: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v2
+
+      - name: Install Node.js Version - ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Install modules
+        run: |
+          npm install
+
+      - name: Zip modules
+        run: |
+          mkdir nodejs
+          mv node_modules/ nodejs/
+          zip -r /tmp/node_modules.zip nodejs/
+
+      - name: Zip code base
+        run: |
+          zip -r /tmp/code.zip *.js *.json
+
+      - name: Upload modules to artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: modules-resize
+          path: /tmp/node_modules.zip
+          retention-days: 1
+
+      - name: Upload code base to artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: codebase-resize
+          path: /tmp/code.zip
+          retention-days: 1
+
+  terraform:
+    name: deploy iac and code
+    strategy:
+      fail-fast: true
+      matrix:
+        include:
+          #integration
+        - environment: integration
+          region: us-east-1
+
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+
+      - name: Checkout the source code
+        uses: actions/checkout@v2
+
+      - name: Download artifact modules
+        uses: actions/download-artifact@v2
+        with:
+          name: modules-resize
+          path: /tmp
+
+      - name: Download artifact code base
+        uses: actions/download-artifact@v2
+        with:
+          name: codebase-resize
+          path: /tmp
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ matrix.region }}
+          role-duration-seconds: 1200
+          role-session-name: ${{ matrix.environment }}-${{ matrix.region }}-session
+          role-skip-session-tagging: true
+
+      - name: Install Terraform Version
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: ${{ env.TF_VERSION }}
+
+      - name: Terraform plan 
+        continue-on-error: false
+        run: |
+          cd ./iac
+          make plan 'ENVNAME=${{ matrix.environment }}' 'REGION=${{ matrix.region }}'
+
+      - name: Terraform apply 
+        continue-on-error: false
+        run: |
+          cd ./iac
+          make apply 'ENVNAME=${{ matrix.environment }}' 'REGION=${{ matrix.region }}'

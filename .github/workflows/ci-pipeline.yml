@@ -1,0 +1,135 @@
+name: "CI Pipeline"
+
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches:
+      - main
+
+env:
+  SERVICE: resize
+  TF_VERSION: 0.14.0
+  NODE_VERSION: 14
+
+jobs:
+  test:
+    name: test
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Build docker image
+      run: docker build -t ${{ env.SERVICE }} .
+
+    - name: Run container
+      run: docker run -dt -e AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} -e AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} -p 9000:8080 ${{ env.SERVICE }} 
+
+    - name: Runtime emulator
+      run: curl -XPOST "http://localhost:9000/2015-03-31/functions/function/invocations" -d "@test/payload.json"
+      
+  build:
+    name: build
+
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v2
+
+      - name: Install Node.js Version - ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Install modules
+        run: |
+          npm install
+
+      - name: Zip modules
+        run: |
+          mkdir nodejs
+          mv node_modules/ nodejs/
+          zip -r /tmp/node_modules.zip nodejs/
+
+      - name: Zip code base
+        run: |
+          zip -r /tmp/code.zip *.js *.json
+
+      - name: Upload modules to artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: modules-resize
+          path: /tmp/node_modules.zip
+          retention-days: 1
+
+      - name: Upload code base to artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: codebase-resize
+          path: /tmp/code.zip
+          retention-days: 1
+
+  terraform:
+    name: iac
+    strategy:
+      fail-fast: true
+      matrix:
+        include:
+          #integration
+        - environment: integration
+          region: us-east-1
+
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+
+      - name: Checkout the source code
+        uses: actions/checkout@v2
+
+      - name: Download artifact modules
+        uses: actions/download-artifact@v2
+        with:
+          name: modules-resize
+          path: /tmp/node_modules.zip
+
+      - name: Download artifact code base
+        uses: actions/download-artifact@v2
+        with:
+          name: codebase-resize
+          path: /tmp/code.zip
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ matrix.region }}
+          role-duration-seconds: 1200
+          role-session-name: ${{ matrix.environment }}-${{ matrix.region }}-session
+          role-skip-session-tagging: true
+
+      - name: Install Terraform Version
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: ${{ env.TF_VERSION }}
+
+      - name: Terraform install compliance
+        run: |
+          pip3 install terraform-compliance==1.3.24
+
+      - name: Terraform plan 
+        continue-on-error: false
+        run: |
+          cd ./iac
+          make plan 'ENVNAME=${{ matrix.environment }}' 'REGION=${{ matrix.region }}'
+
+      - name: Terraform complaince 
+        continue-on-error: false
+        run: |
+          cd ./iac
+          make test_terraform_compliance 'ENVNAME=${{ matrix.environment }}' 'REGION=${{ matrix.region }}'
