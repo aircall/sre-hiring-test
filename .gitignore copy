@@ -1,0 +1,12 @@
+# ignored files
+node_modules
+**/*.tfstate
+**/.terraform
+*.iml
+**/plan.out
+**/plan.out.json
+**/.terraform.lock.hcl
+**/tfplan
+**/tfplan.json
+**/.DS_Store
+.DS_Store

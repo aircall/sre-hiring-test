@@ -1,0 +1,109 @@
+{
+  "resource": "/image",
+  "path": "/image",
+  "httpMethod": "POST",
+  "headers": {
+    "Accept": "*/*",
+    "CloudFront-Forwarded-Proto": "https",
+    "CloudFront-Is-Desktop-Viewer": "true",
+    "CloudFront-Is-Mobile-Viewer": "false",
+    "CloudFront-Is-SmartTV-Viewer": "false",
+    "CloudFront-Is-Tablet-Viewer": "false",
+    "CloudFront-Viewer-Country": "GB",
+    "content-type": "multipart/form-data; boundary=------------------------f482cd5676ac2682",
+    "Host": "z7zan3asc4.execute-api.us-east-1.amazonaws.com",
+    "User-Agent": "curl/7.54.0",
+    "Via": "2.0 01f803d1e7c713d110bffe7b82d3cb2c.cloudfront.net (CloudFront)",
+    "X-Amz-Cf-Id": "MzuXEGI0ur2P9Bn8OhSZj2HK7poqzalVofWP27zeN6Tf7xFqz7jS3Q==",
+    "X-Amzn-Trace-Id": "Root=1-6121ac59-5d59f5726f5bc6a15023ccb7",
+    "X-Forwarded-For": "86.31.45.10, 130.176.96.81",
+    "X-Forwarded-Port": "443",
+    "X-Forwarded-Proto": "https"
+  },
+  "multiValueHeaders": {
+    "Accept": [
+      "*/*"
+    ],
+    "CloudFront-Forwarded-Proto": [
+      "https"
+    ],
+    "CloudFront-Is-Desktop-Viewer": [
+      "true"
+    ],
+    "CloudFront-Is-Mobile-Viewer": [
+      "false"
+    ],
+    "CloudFront-Is-SmartTV-Viewer": [
+      "false"
+    ],
+    "CloudFront-Is-Tablet-Viewer": [
+      "false"
+    ],
+    "CloudFront-Viewer-Country": [
+      "GB"
+    ],
+    "content-type": [
+      "multipart/form-data; boundary=------------------------f482cd5676ac2682"
+    ],
+    "Host": [
+      "z7zan3asc4.execute-api.us-east-1.amazonaws.com"
+    ],
+    "User-Agent": [
+      "curl/7.54.0"
+    ],
+    "Via": [
+      "2.0 01f803d1e7c713d110bffe7b82d3cb2c.cloudfront.net (CloudFront)"
+    ],
+    "X-Amz-Cf-Id": [
+      "MzuXEGI0ur2P9Bn8OhSZj2HK7poqzalVofWP27zeN6Tf7xFqz7jS3Q=="
+    ],
+    "X-Amzn-Trace-Id": [
+      "Root=1-6121ac59-5d59f5726f5bc6a15023ccb7"
+    ],
+    "X-Forwarded-For": [
+      "86.31.45.10, 130.176.96.81"
+    ],
+    "X-Forwarded-Port": [
+      "443"
+    ],
+    "X-Forwarded-Proto": [
+      "https"
+    ]
+  },
+  "queryStringParameters": null,
+  "multiValueQueryStringParameters": null,
+  "pathParameters": null,
+  "stageVariables": null,
+  "requestContext": {
+    "resourceId": "ioqma5",
+    "resourcePath": "/image",
+    "httpMethod": "POST",
+    "extendedRequestId": "Ecfd_HFooAMFSIQ=",
+    "requestTime": "22/Aug/2021:01:46:01 +0000",
+    "path": "/integration/image",
+    "accountId": "202879413841",
+    "protocol": "HTTP/1.1",
+    "stage": "integration",
+    "domainPrefix": "z7zan3asc4",
+    "requestTimeEpoch": 1629596761361,
+    "requestId": "6a55ffc1-b834-4e65-af13-dcb9120594a7",
+    "identity": {
+      "cognitoIdentityPoolId": null,
+      "accountId": null,
+      "cognitoIdentityId": null,
+      "caller": null,
+      "sourceIp": "86.31.45.10",
+      "principalOrgId": null,
+      "accessKey": null,
+      "cognitoAuthenticationType": null,
+      "cognitoAuthenticationProvider": null,
+      "userArn": null,
+      "userAgent": "curl/7.54.0",
+      "user": null
+    },
+    "domainName": "z7zan3asc4.execute-api.us-east-1.amazonaws.com",
+    "apiId": "z7zan3asc4"
+  },
+  "body": "--------------------------f482cd5676ac2682\r\nContent-Disposition: form-data; name=\"file\"; filename=\"python.jpg\"\r\nContent-Type: image/jpeg\r\n\r\n\ufffd\ufffd\ufffd\ufffd\u0000\u0010JFIF\u0000\u0001\u0001\u0001\u0000\u0001\u0000\u0001\u0000\u0000\ufffd\ufffd\u0000C\u0000\u0003\u0002\u0002\u0002\u0002\u0002\u0003\u0002\u0002\u0002\u0003\u0003\u0003\u0003\u0004\u0006\u0004\u0004\u0004\u0004\u0004\b\u0006\u0006\u0005\u0006\t\b\n\n\t\b\t\t\n\f\u000f\f\n\u000b\u000e\u000b\t\t\r\u0011\r\u000e\u000f\u0010\u0010\u0011\u0010\n\f\u0012\u0013\u0012\u0010\u0013\u000f\u0010\u0010\u0010\ufffd\ufffd\u0000C\u0001\u0003\u0003\u0003\u0004\u0003\u0004\b\u0004\u0004\b\u0010\u000b\t\u000b\u0010\u0010\u0010\u0010\u0010\u0010\u0010\u0010\u0010\u0010\u0010\u0010\u0010\u0010\u0010\u0010\u0010\u0010\u0010\u0010\u0010\u0010\u0010\u0010\u0010\u0010\u0010\u0010\u0010\u0010\u0010\u0010\u0010\u0010\u0010\u0010\u0010\u0010\u0010\u0010\u0010\u0010\u0010\u0010\u0010\u0010\u0010\u0010\u0010\u0010\ufffd\ufffd\u0000\u0011\b\u0000\u0010\u0000\u0010\u0003\u0001\"\u0000\u0002\u0011\u0001\u0003\u0011\u0001\ufffd\ufffd\u0000\u0016\u0000\u0001\u0001\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0007\u0004\u0005\ufffd\ufffd\u0000$\u0010\u0000\u0001\u0004\u0001\u0004\u0002\u0002\u0003\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0002\u0003\u0004\u0006\u0005\u0007\b\u0012\u0013\u0011\"\u0000\u0014\t12\ufffd\ufffd\u0000\u0015\u0001\u0001\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0006\ufffd\ufffd\u0000#\u0011\u0000\u0001\u0002\u0005\u0003\u0005\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0002\u0011\u0003\u0004\u0005\u0006!\u0000\u00121\u0015\u0016a\ufffd\ufffd\ufffd\ufffd\u0000\f\u0003\u0001\u0000\u0002\u0011\u0003\u0011\u0000?\u0000\u0014\ufffd\ufffdj\u001bs\ufffd\ufffd\u0013\u0012ԕ\u001c\ufffd\u0011c\ufffd%e\ufffd\ufffdZ\ufffdiE@\ufffd\ufffd \ufffdT\ufffd\u001f\ufffdʸ\ufffd\ufffd \ufffd\ufffd=\ufffdl\ufffd5\ufffdw\ufffd\ufffdm\ufffd\u0017\ufffd\ufffdW\u001c\u007f\u001c\ufffdq\ufffdK9\ufffd\ufffd\"S\ufffd\u001ai\ufffd\ufffdqJ8\ufffd\ufffd\ufffdK\ufffd*qi\u001e\ufffd-!;\ufffd\ufffd\u001at\ufffd\ufffdZu\ufffd\ufffdH\ufffde[\ufffd\ufffd\ufffd\ufffd{!)\ufffdg\ufffdk\ufffd\ufffdIeO\ufffdȅ)\u0011K\ufffd*\ufffdz\ufffd\ufffd<\ufffd~U\ufffd\r\ufffdb\ufffd@\ufffd\ufffd\ufffd=\\\ufffdC\ufffd\ufffdzeX\ufffd\ufffdQ!\ufffd\ufffdd\ufffd\ufffd\ufffd\ufffdh\u0004)\ufffd\ufffd\ufffd\ufffd<\u0002\ufffd<T\u0007\ufffd\ufffd\ufffd{T\ufffd'\ufffdnߔ`\u0014\ufffdb\u0013\ufffd\ufffdR\ufffd(7\u0005\ufffdry`\ufffd2\ufffdoÂ\ufffd\ufffdR\ufffd\ufffd \ufffd\ufffdx\u0019\u001f\u0007\ufffd\u007f\ufffd\ufffd\r\n--------------------------f482cd5676ac2682\r\nContent-Disposition: form-data; name=\"s3Key\"\r\n\r\npython.jpg\r\n--------------------------f482cd5676ac2682--\r\n",
+  "isBase64Encoded": false
+}
