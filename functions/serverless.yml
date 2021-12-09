@@ -1,0 +1,28 @@
+service: crop-image-moises-functions
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: ${env:STAGE, 'dev'}
+  profile: serverless-admin
+  region: ${env:REGION, 'us-east-1'}s
+  environment:
+    S3_BUCKET: ${env:BUCKET}
+    REGION: ${env:REGION}
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "s3:ListBucket"
+      Resource: "arn:aws:s3:::${self:custom.bucket}"
+    - Effect: "Allow"
+      Action:
+        - "s3:PutObject"
+      Resource: "arn:aws:s3:::${self:custom.bucket}"
+
+functions:
+  app:
+    handler: app.lambdaHandler
+    events:
+      - http:
+          path: /image
+          method: post
