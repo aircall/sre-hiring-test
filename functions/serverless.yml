@@ -1,11 +1,13 @@
 service: crop-image-moises-functions
+app: crop-image-moises
+org: mbarper
 
 provider:
   name: aws
   runtime: nodejs12.x
+  lambdaHashingVersion: 20201221
   stage: ${env:STAGE, 'dev'}
-  profile: serverless-admin
-  region: ${env:REGION, 'us-east-1'}s
+  region: ${env:REGION, 'us-east-1'}
   environment:
     S3_BUCKET: ${env:BUCKET}
     REGION: ${env:REGION}
@@ -13,11 +15,11 @@ provider:
     - Effect: "Allow"
       Action:
         - "s3:ListBucket"
-      Resource: "arn:aws:s3:::${self:custom.bucket}"
+      Resource: "arn:aws:s3:::${env:BUCKET}"
     - Effect: "Allow"
       Action:
         - "s3:PutObject"
-      Resource: "arn:aws:s3:::${self:custom.bucket}"
+      Resource: "arn:aws:s3:::${env:BUCKET}"
 
 functions:
   app:
