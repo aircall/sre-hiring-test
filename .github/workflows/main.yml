@@ -9,14 +9,14 @@ on:
 jobs:
   docker:
     runs-on: ubuntu-latest
+    env:
+      SLS_KEY: ${{ secrets.SLS_KEY }}
+      SLS_SECRET: ${{ secrets.SLS_SECRET }}
+      STAGE: ${{ secrets.STAGE }}
+      REGION: ${{ secrets.REGION }}
+      BUCKET: ${{ secrets.BUCKET }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Build the container
-        env:
-          SLS_KEY: ${{ secrets.SLS_KEY }}
-          SLS_SECRET: ${{ secrets.SLS_SECRET }}
-          STAGE: ${{ secrets.STAGE }}
-          REGION: ${{ secrets.REGION }}
-          BUCKET: ${{ secrets.BUCKET }}
-        run: docker-compose up --build
+        run: docker build .
