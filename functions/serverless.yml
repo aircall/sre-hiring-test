@@ -47,12 +47,6 @@ resources:
                   - lambda.amazonaws.com
               Action:
                 - sts:AssumeRole
-            - Effect: Allow
-              Action:
-                - logs:CreateLogGroup
-                - logs:CreateLogStream
-                - logs:PutLogEvents
-              Resource: *
         Path: /
         Policies:
           - PolicyName: S3_ACL
@@ -73,3 +67,15 @@ resources:
                     - s3:ListBucket
                   Resource:
                     - !GetAtt S3Bucket.Arn
+                - Effect: Allow
+                  Action:
+                    - logs:CreateLogGroup
+                    - logs:CreateLogStream
+                    - logs:PutLogEvents
+                  Resource:
+                    - 'Fn::Join':
+                        - ':'
+                        - - 'arn:aws:logs'
+                          - Ref: 'AWS::Region'
+                          - Ref: 'AWS::AccountId'
+                          - 'log-group:/aws/lambda/*:*:*'
