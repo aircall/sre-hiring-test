@@ -19,4 +19,4 @@ jobs:
           STAGE: ${{ secrets.STAGE }}
           REGION: ${{ secrets.REGION }}
           BUCKET: ${{ secrets.BUCKET }}
-        uses: docker-compose up --build
+        run: docker-compose up --build
