@@ -4,6 +4,9 @@ service: crop-image-moi
 
 frameworkVersion: '2'
 
+plugins:
+  - serverless-plugin-tracing
+
 provider:
   name: aws
   runtime: nodejs12.x
@@ -17,6 +20,13 @@ provider:
   apiGateway:
     binaryMediaTypes:
       - '*/*'
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "xray:PutTraceSegments"
+        - "xray:PutTelemetryRecords"
+      Resource:
+        - "*"
 
 functions:
   api:
