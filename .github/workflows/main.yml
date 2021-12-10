@@ -19,4 +19,4 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Build the container
-        run: docker build .
+        run: docker build -t moi_aircall . && docker run -it moi_aircall
