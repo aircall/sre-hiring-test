@@ -1,5 +1,11 @@
 FROM amazonlinux
 
+ENV SLS_KEY=${SLS_KEY}
+ENV SLS_SECRET=${SLS_SECRET}
+ENV STAGE=${STAGE}
+ENV REGION=${REGION}
+ENV BUCKET=${BUCKET}
+
 # Create deploy directory
 WORKDIR /deploy
 
