@@ -58,6 +58,12 @@ resources:
                   - lambda.amazonaws.com
               Action:
                 - sts:AssumeRole
+            - Effect: Allow
+              Action:
+                - logs:CreateLogGroup
+                - logs:CreateLogStream
+                - logs:PutLogEvents
+              Resource: *
         Path: /
         Policies:
           - PolicyName: S3_ACL
@@ -69,6 +75,8 @@ resources:
                     - s3:PutObject
                     - s3:PutObjectAcl
                     - s3:GetObject
+                    - s3:GetObjectAcl
+                    - s3:ListBucket
                   Resource:
                     - !Join ['', [!GetAtt S3Bucket.Arn, "/*"]]
                 - Effect: Allow
