@@ -16,7 +16,7 @@ provider:
     name: moi-deploys
   apiGateway:
     binaryMediaTypes:
-      - 'multipart/form-data'
+      - '*/*'
 
 functions:
   api:

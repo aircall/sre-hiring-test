@@ -35,9 +35,12 @@ exports.lambdaHandler = async (event, context) => {
         } else {
             throw Error("Method not supported");
         }
+        console.log("He salido del if/else")
 
         const promises = image_sizes.map(async image_size => {
+            console.log("He entrado en el map")
             const crop_img_buffer = await resize_image(img_buffer,image_size);
+            console.log("He hecho el resize")
             let s3_key_image;
             if (image_size !== image_max_size){
                 s3_key_image = s3_key + '_' + image_size;
