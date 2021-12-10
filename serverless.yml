@@ -13,6 +13,7 @@ provider:
   lambdaHashingVersion: '20201221'
   stackName: dev-${self:service}-api
   region: us-east-1
+  tracing: true
   memorySize: 256
   stage: dev
   deploymentBucket:
