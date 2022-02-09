@@ -1,0 +1,52 @@
+service: crop-image-test
+
+plugins:
+  - serverless-layers
+
+provider:
+  name: aws
+  stackName: ${opt:stage, 'dev'}-${self:service}-api
+  runtime: nodejs12.x
+  region: us-west-2
+  memorySize: 256
+  stage: ${opt:stage, 'dev'}
+  deploymentBucket:
+    name: ra-serverless-deployments
+  apiGateway:
+    binaryMediaTypes:
+      - 'multipart/form-data'
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action: 
+            - s3:PutObject
+            - s3:PutObjectAcl
+          Resource: !Join ['', [!GetAtt S3Bucket.Arn, "/*"]]
+  tracing:
+    apiGateway: true
+    lambda: true
+
+functions:
+  api:
+    environment:
+      S3_BUCKET: !Ref S3Bucket
+    handler: app.lambdaHandler
+    events:
+      - http:
+          path: /image
+          method: POST
+
+package:
+  patterns:
+    - '!./*'
+    - app.js
+    - parser.js
+
+resources:
+  Resources:
+    S3Bucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        AccessControl: PublicRead
+        BucketName: ra-images-resized-${opt:stage, 'dev'}

@@ -13,9 +13,14 @@
     "sharp": "^0.25.2"
   },
   "devDependencies": {
-    "eslint": "^6.8.0"
+    "eslint": "^6.8.0",
+    "serverless-layers": "^2.5.1"
   },
   "scripts": {
-    "deploy": "serverless deploy"
+    "info":   "serverless info",
+    "deploy": "serverless deploy",
+    "remove": "serverless remove",
+    "deploy:prod": "serverless deploy --stage prod",
+    "remove:prod": "serverless remove --stage prod"
   }
 }
