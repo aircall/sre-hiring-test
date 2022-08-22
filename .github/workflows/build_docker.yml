@@ -22,7 +22,6 @@ jobs:
       - name: Assume AWS role
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          role-to-assume: ${{ secrets.AWS_ROLE }}
           aws-region: eu-central-1
       - name: Get ECR Token
         id: get-token
