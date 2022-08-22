@@ -43,7 +43,7 @@ resource "aws_iam_policy" "this" {
     },
     {
       "Action": [
-        "s3:GetObject"
+        "s3:*"
       ],
       "Resource": ["arn:aws:s3:::aircall-${local.env}/*"],
       "Effect": "Allow"
@@ -126,7 +126,7 @@ resource "aws_s3_bucket" "this" {
 
 resource "aws_s3_bucket_acl" "this" {
   bucket = aws_s3_bucket.this.id
-  acl    = "private"
+  acl    = "public-read"
 }
 
 module "cloudfront" {
