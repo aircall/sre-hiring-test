@@ -28,11 +28,6 @@ exports.lambdaHandler = async (event, context) => {
     var s3_key;
 
     try {
-        console.log('PAAAATHH')
-        console.log('PAAAATHH')
-        console.log('PAAAATHH')
-        console.log('PAAAATHH')
-        console.log(event)
         if (event.rawPath && event.rawPath == "/image") {
             const { body } = await parser.parse(event);
             s3_key = body.s3Key;
@@ -56,7 +51,7 @@ exports.lambdaHandler = async (event, context) => {
 
         response = {
             'statusCode': 200,
-            'body': "ok",
+            'body': `https://${S3_BUCKET}.s3.eu-central-1.amazonaws.com/${}`,
             'headers': {
                 'Content-Type': 'application/text',
                 'Access-Control-Allow-Origin': '*'
