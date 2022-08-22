@@ -38,7 +38,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [ auth_ecr ]
     container:
-      image: ghcr.io/aircall-temp/helper-dind
+      image: ghcr.io/aircall-temp/helper-dind:stable
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GHR_TOKEN }}
