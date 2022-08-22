@@ -28,7 +28,12 @@ exports.lambdaHandler = async (event, context) => {
     var s3_key;
 
     try {
-        if (event.path && event.path == "/image") {
+        console.log('PAAAATHH')
+        console.log('PAAAATHH')
+        console.log('PAAAATHH')
+        console.log('PAAAATHH')
+        console.log(event)
+        if (event.rawPath && event.rawPath == "/image") {
             const { body } = await parser.parse(event);
             s3_key = body.s3Key;
             img_buffer = body.files[0].file;
