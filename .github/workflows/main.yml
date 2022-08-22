@@ -27,4 +27,20 @@ jobs:
     with:
       registry: ${{ needs.generate_tag.outputs.registry }}
       tag: ${{ needs.generate_tag.outputs.tag }}
-    secrets: inherit
+    secrets: inherit 
+  
+  update_lambda:
+    name: Update lambda
+    needs: [build_image]
+    container: amazon/aws-cli
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.env_name }}
+    steps:
+      - name: Assume AWS role
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: eu-central-1
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      - name: Update lambda
+        run: aws lambda update-function-code --function-name aircall-default --image-uri ${{ needs.generate_tag.outputs.registry }}:${{ steps.generate_tag.outputs.tag }}
