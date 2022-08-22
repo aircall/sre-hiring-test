@@ -18,9 +18,8 @@ jobs:
         run: |
           TAG=$(echo $GITHUB_SHA | head -c7)
           echo ::set-output name=tag::${TAG}
-          echo ::set-output name=registry::851753474945.dkr.ecr.eu-central-1.amazonaws.com/lyreal-apis/demo
+          echo ::set-output name=registry::557803826724.dkr.ecr.eu-central-1.amazonaws.com/node-lambda
     outputs:
-      image_url: ${{ steps.generate_tag.outputs.image_url }}
       registry: ${{ steps.generate_tag.outputs.registry }}
       tag: ${{ steps.generate_tag.outputs.tag }}
 
@@ -28,38 +27,7 @@ jobs:
     name: Build docker image
     needs: [generate_tag]
     uses: ./.github/workflows/build_docker.yml
-    # uses: lyreally/github-actions/.github/workflows/build_docker.yml@main
     with:
       registry: ${{ needs.generate_tag.outputs.registry }}
       tag: ${{ needs.generate_tag.outputs.tag }}
     secrets: inherit
-
-  deploy_dev:
-    # if: github.event_name == 'push' && github.ref_name == 'release-candidate'
-    name: Deploy dev
-    needs: [build_image]
-    uses: ./.github/workflows/argocd_deploy.yml
-    with:
-      env_path: ./.k8s/config.dev.env
-      cluster_name: lyreal-dev
-      tag: ${{ needs.generate_tag.outputs.tag }}
-      app_name: demo
-    secrets: inherit
-
-  wrapper:
-    name: Slack notification
-    needs: [
-      generate_tag,
-      build_image,
-      deploy_dev
-    ]
-    runs-on: ubuntu-latest
-    if: ${{ always() && !cancelled() }}
-    steps:
-    - name: Slack Notification
-      uses: rtCamp/action-slack-notify@v2
-      env:
-        SLACK_TITLE: "demo"
-        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-        SLACK_COLOR: "${{ contains(join(needs.*.result, ','), 'failure') && '#CC0000' || '#00CC00'}}"
-        SLACK_MESSAGE: "${{ contains(join(needs.*.result, ','), 'failure')  && 'Pipeline failed' || 'Pipeline Succeded'}}"
